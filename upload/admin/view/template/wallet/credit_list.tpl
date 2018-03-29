@@ -1,0 +1,363 @@
+<?php echo $header; ?><?php echo $column_left; ?>
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1><?php echo $text_list ?></h1>
+      <ul class="breadcrumb">
+          <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+          <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+          <?php } ?>
+      </ul>
+      <div class="pull-right"><button data-toggle="modal" data-target="#addCredit" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $text_add ?></button></div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i><?php echo $text_list ?></h3>
+      </div>
+      <div class="panel-body">
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-name"><?php echo $column_name; ?> </label>
+                <input type="text" name="filter_name" value="" placeholder="<?php echo $column_name; ?>" id="input-name" class="form-control" autocomplete="off">
+                <input type="hidden" name="filter_customer_id" id="input-customer-filter" class="form-control" value="">
+                <ul class="dropdown-menu" style="top: 74px; left: 15px; display: none;"></ul>
+              </div>
+             <!--  <div class="form-group">
+                <label class="control-label" for="input-email">E-mail</label>
+                <input type="text" name="filter_email" value="" placeholder="E-mail" id="input-email" class="form-control" autocomplete="off"><ul class="dropdown-menu"></ul>
+              </div> -->
+            </div>
+            <!-- <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-order-id">Order ID</label>
+                <input type="text" name="filter_order_id" value="" placeholder="Order ID" id="input-order-id" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-amount">Amount</label>
+                <input type="text" name="filter_amount" value="" placeholder="Amount" id="input-amount" class="form-control">
+              </div>
+            </div> -->
+            <div class="col-sm-4">
+             <!--  <div class="form-group">
+                <label class="control-label" for="input-date-added">Date Added</label>
+                <div class="input-group date">
+                  <input type="text" name="filter_date_added" value="" placeholder="Date Added" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control">
+                  <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span></div>
+              </div> -->
+              <button style ="margin-top: 37px" type="button" id="button-filter" class="btn btn-primary pull-left"><i class="fa fa-search"></i> <?php echo $text_filter?></button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="text-left">                  <a href="#"><?php echo $column_name; ?></a>
+                  </td>
+                <td class="text-left">                  <a href="#"><?php echo $column_email; ?></a>
+                  </td>
+              <!--   <td class="text-right">                  <a href="http://oc.webkul.com/Wallet-System/admin/index.php?route=wallet/wk_credits&amp;user_token=Sob0USzRWvAIvqty9wXMzF9k4hwXSGdn&amp;sort=order_id&amp;order=ASC">Order ID</a>
+                  </td> -->
+                <td class="text-left">                  <a href="#"><?php echo $column_date_added; ?></a>
+                  </td>
+                <td class="text-left">                  <a href="#"><?php echo $column_amount; ?></a>
+                  </td>
+                <td class="text-left"><?php echo $column_description; ?></td>
+                <td class="text-left"><?php echo $column_action; ?></td>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($credits as $key => $credit) { ?>
+               <tr>
+                <td class="text-left"><?php echo $credit['customer_name']?></td>
+                <td class="text-left"><?php echo $credit['email']?></td>
+<!--                 <td class="text-right">68</td>
+ -->                <td class="text-left"><?php echo $credit['date']?></td>
+                <td class="text-left"><?php echo $credit['amount']?></td>
+                <td class="text-left"><?php echo $credit['description']?></td>
+                  <td class="text-right">
+                    <?php if( $credit['type'] == 1){ ?>
+                     <a onclick = "deleteCreditView('<?php echo $credit['credit_id']; ?>')"  data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-warning"><i class="fa fa-unlock"></i></a>
+
+                    <a onclick = "editCreditView('<?php echo $credit['credit_id']; ?>')"  data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                  </td>
+                   <?php } ?>
+               </tr>
+               <?php }?>            
+                                        </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
+          <div class="col-sm-6 text-right"><?php echo $results; ?></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="addCredit" class="modal fade" role="dialog" tabindex="-1" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h4 class="modal-title"><?php echo $text_add; ?></h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label" for="input-customer-name"><?php echo $column_name; ?></label>
+            <input type="text" name="name" placeholder="<?php echo $column_name; ?>" id="input-customer-name" class="form-control customerName" autocomplete="off"><ul class="dropdown-menu" style="top: 89px; left: 15px; display: none;"></ul>
+            <input type="hidden" name="customer_id" id="input-customer" class="form-control" value="">
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="input-credit-amount"><?php echo $column_amount; ?></label>
+            <input type="number" step="10" name="amount" placeholder="<?php echo $column_amount; ?>" id="input-credit-amount" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="input-description"><?php echo $column_description; ?></label>
+            <textarea name="description" placeholder="<?php echo $column_description; ?>" id="input-description" class="form-control"></textarea>
+          </div>
+          <input type="submit" class="btn btn-primary" id="button-credit"> <!-- <i class="fa fa-spinner fa-spin"></i> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $text_close; ?></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+  url = 'index.php?route=wallet/credit&token=<?php echo $token; ?>';
+
+/*  var filter_order_id = $('input[name=\'filter_order_id\']').val();
+
+  if (filter_order_id) {
+    url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
+  }*/
+
+  /*var filter_name = $('input[name=\'filter_name\']').val();
+
+  if (filter_name) {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }*/
+  var filter_customer_id = $('input[name=\'filter_customer_id\']').val();
+
+  if (filter_customer_id) {
+    url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+  }
+
+  /*var filter_email = $('input[name=\'filter_email\']').val();
+
+  if (filter_email) {
+    url += '&filter_email=' + encodeURIComponent(filter_email);
+  }
+
+  var filter_amount = $('input[name=\'filter_amount\']').val();
+
+  if (filter_amount) {
+    url += '&filter_amount=' + encodeURIComponent(filter_amount);
+  }
+
+  var filter_date_added = $('input[name=\'filter_date_added\']').val();
+
+  if (filter_date_added) {
+    url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+  }*/
+
+  location = url;
+});
+//--></script>
+  <script type="text/javascript"><!--
+$('input[name=\'filter_name\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_name\']').val(item['label']);
+    $('input[name=\'filter_customer_id\']').val(item['value']);
+  }
+});
+
+$('input[name=\'name\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'] + ' (' + item['email'] + ')',
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'name\']').val(item['label']);
+    $('input[name=\'customer_id\']').val(item['value']);
+  }
+});
+
+$('input[name=\'filter_email\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['email'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_email\']').val(item['label']);
+  }
+});
+//--></script>
+  <script type="text/javascript"><!--
+$('.date').datetimepicker({
+  pickTime: false
+});
+//--></script>
+<script type="text/javascript">
+  $('#button-credit').on('click', function () {
+    var customer_id = $('#input-customer').val(); alert(customer_id);
+    var amount = $('#input-credit-amount').val();
+    var description = $('#input-description').val();
+    var thisthis = $(this);
+
+    $.ajax({
+      url: 'index.php?route=wallet/credit/add&token=<?php echo $token; ?>',
+      dataType: 'json',
+      type: 'post',
+      data: {customer_id: customer_id, amount: amount, description: description},
+      beforeSend: function () {
+        $('.alert').remove();
+        $('.text-danger').remove();
+        thisthis.after(' <i class="fa fa-spinner fa-spin"></i>');
+      },
+      success: function (json) {//alert(json);
+        $('.fa-spinner').remove();
+        console.log(json);
+        if (json['error']) {
+          html = '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>';
+          $('.modal-body').prepend(html);
+          if (json['customer']) {
+            html = '<div class="text-danger">' + json['customer'] + '</div>';
+            $('#input-customer').after(html);
+          };
+          if (json['amount']) {
+            html = '<div class="text-danger">' + json['amount'] + '</div>';
+            $('#input-credit-amount').after(html);
+          };
+          if (json['description']) {
+            html = '<div class="text-danger">' + json['description'] + '</div>';
+            $('#input-description').after(html);
+          };
+        };
+        if (json['success']) {
+          html = '<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>';
+          $('.panel').before(html);
+          $('#input-customer-name').val('');
+          $('#input-customer_id').val('');
+          $('#input-credit-amount').val('');
+          $('#input-description').val('');
+          $('.in').trigger('click');
+         // location.reload();
+        };
+      }
+    });
+  });
+
+  function  editCreditView(credit_id){
+      var thisthis = $(this);
+     var url = 'index.php?route=wallet/credit/getForm&token=<?php echo $token; ?>'+'&credit_id='+credit_id;//alert(url);
+        $.ajax({
+      url: url,
+      dataType: 'html',
+      type: 'post',
+      data: {credit_id: credit_id},
+      beforeSend: function () {
+       /* $('.alert').remove();
+        $('.text-danger').remove();
+        thisthis.after(' <i class="fa fa-spinner fa-spin"></i>');*/
+      },
+      success: function (html) {//alert(html);
+         $("#addCredit").html(html);
+       $("#addCredit").modal();
+/*
+        $('.fa-spinner').remove();
+        console.log(json);
+        if (json['error']) {
+          html = '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>';
+          $('.modal-body').prepend(html);
+          if (json['customer']) {
+            html = '<div class="text-danger">' + json['customer'] + '</div>';
+            $('#input-customer').after(html);
+          };
+          if (json['amount']) {
+            html = '<div class="text-danger">' + json['amount'] + '</div>';
+            $('#input-credit-amount').after(html);
+          };
+          if (json['description']) {
+            html = '<div class="text-danger">' + json['description'] + '</div>';
+            $('#input-description').after(html);
+          };
+        };
+        if (json['success']) {
+          html = '<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>';
+          $('.panel').before(html);
+          $('#input-customer-name').val('');
+          $('#input-customer_id').val('');
+          $('#input-credit-amount').val('');
+          $('#input-description').val('');
+          $('.in').trigger('click');
+          location.reload();
+        };*/
+      }
+    });
+  }
+
+
+  function  deleteCreditView(credit_id){
+      var thisthis = $(this);
+     var url = 'index.php?route=wallet/credit/delete&token=<?php echo $token; ?>'+'&credit_id='+credit_id;alert(url);
+        $.ajax({
+      url: url,
+      dataType: 'html',
+      type: 'get',
+      data: {credit_id: credit_id},
+      beforeSend: function () {
+       /* $('.alert').remove();
+        $('.text-danger').remove();
+        thisthis.after(' <i class="fa fa-spinner fa-spin"></i>');*/
+      },
+      success: function (html) {//alert(html);
+         location.reload();
+      }
+    });
+  }
+</script>
+</div>
+
+<?php echo $footer; ?>
